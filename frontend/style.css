@@ -110,6 +110,63 @@ body .page-shell .booking-item button{color:#c14f59}
 body .page-shell footer{color:#8490a0}
 body .page-shell~.toast{background:#e4f7ec;color:#1e6846;box-shadow:0 8px 30px #233b5220}
 body .page-shell~.toast.error{background:#fff0f0;color:#a93c45;border-color:#f1d2d4}
+/* Dark green-teal palette supplied by the user. */
+body{color-scheme:dark;--bg:#001f23;--panel:#162d31;--panel-2:#2d3922;--line:#294044;--muted:#a1b1ad;--text:#edf2ed;--accent:#2d3922;--purple:#104439}
+html body{background:#001f23;color:#edf2ed}
+body .page-shell .topbar{border-bottom-color:#ffffff19}
+body .page-shell .brand{color:#edf2ed}
+body .page-shell .brand-mark{background:#104439;color:#edf2ed}
+body .page-shell .brand-light{color:#a1b1ad}
+body .page-shell .live-pill{color:#bac6c1}
+body .page-shell .live-dot{background:#6e9b7d;box-shadow:0 0 0 3px #6e9b7d2b}
+body .page-shell .eyebrow{color:#9ab39c}
+body .page-shell .hero h1 span{color:#9ab39c}
+body .page-shell .intro{color:#a1b1ad}
+body .page-shell .show-card{border-color:#294044;background:#162d31;box-shadow:0 8px 24px #0005}
+body .page-shell .poster{background:linear-gradient(145deg,#104439,#2d3922 58%,#162d31);color:#edf2ed}
+body .page-shell .show-label,body .page-shell .summary-label{color:#a1b1ad}
+body .page-shell .show-info p{color:#bac6c1}
+body .page-shell .show-info p span{color:#9ab39c}
+body .page-shell .show-meta span{background:#001f23;border-color:#294044;color:#c7d1cb}
+body .page-shell .seat-panel,body .page-shell .order-panel{border-color:#294044;background:#162d31;box-shadow:0 6px 22px #0004;color:#edf2ed}
+body .page-shell .connection{color:#a1b1ad}
+body .page-shell .connection.online{color:#b8d0bc}
+body .page-shell .connection.online span{background:#6e9b7d;box-shadow:0 0 0 3px #6e9b7d2b}
+body .page-shell .connection.offline span{background:#bb7774}
+body .page-shell .seat-instruction{color:#a1b1ad}
+body .page-shell .screen-wrap{color:#a1b1ad}
+body .page-shell .screen{background:linear-gradient(180deg,#2d3922,#162d31);border-top-color:#748779;box-shadow:0 -4px 12px #10443955}
+body .page-shell .row-label,body .page-shell .column-label{color:#a1b1ad}
+body .page-shell .seat{border-color:#24584d;background:#104439;color:#edf2ed}
+body .page-shell .seat::after{background:#ffffff55}
+body .page-shell .seat:not(:disabled):hover{box-shadow:0 4px 9px #0007;border-color:#78977d}
+body .page-shell .seat.selected{background:#2d3922;border-color:#a9bb9b;color:#fff;box-shadow:0 0 0 2px #a9bb9b66}
+body .page-shell .seat.selected::after{background:#dbe5d1}
+body .page-shell .seat.booked{background:#062a0a;border-color:#29472b;color:#8c9b8c}
+body .page-shell .seat.booked::after{background:#ffffff33}
+body .page-shell .legend{color:#bac6c1}
+body .page-shell .legend-seat{border-color:#24584d;background:#104439}
+body .page-shell .legend-seat.selected{background:#2d3922;border-color:#a9bb9b}
+body .page-shell .legend-seat.booked{background:#062a0a;border-color:#29472b}
+body .page-shell .order-top{border-bottom-color:#294044}
+body .page-shell .selected-card{background:#001f23;border-color:#294044}
+body .page-shell .ticket-icon{background:#104439;color:#dbe5d1}
+body .page-shell .name-label{color:#c7d1cb}
+body .page-shell .order-panel input{border-color:#405356;background:#001f23;color:#edf2ed}
+body .page-shell .order-panel input::placeholder{color:#849590}
+body .page-shell .order-panel input:focus{border-color:#6f9a80;box-shadow:0 0 0 3px #10443966}
+body .page-shell .price-row{border-top-color:#294044;color:#bac6c1}
+body .page-shell .price-row strong{color:#edf2ed}
+body .page-shell .book-button{background:#104439;color:#edf2ed}
+body .page-shell .book-button:disabled{opacity:.45}
+body .page-shell .note,body .page-shell .empty-bookings{color:#a1b1ad}
+body .page-shell .my-bookings{border-top-color:#294044}
+body .page-shell .my-bookings-heading>span{color:#c7d1cb;background:#001f23}
+body .page-shell .booking-item{background:#001f23;color:#edf2ed}
+body .page-shell .booking-item button{color:#d1968f}
+body .page-shell footer{color:#849590}
+body .page-shell~.toast{background:#2d3922;color:#edf2ed;box-shadow:0 8px 30px #0007}
+body .page-shell~.toast.error{background:#3a2423;color:#f2d8d5;border-color:#60403e}
 @media(max-width:800px){body .page-shell .seat-row{grid-template-columns:18px repeat(5,minmax(22px,1fr)) 16px repeat(5,minmax(22px,1fr));gap:5px}body .page-shell .seat-panel{padding:22px 14px 20px}}
 @media(max-width:430px){body .page-shell .seat-row{grid-template-columns:16px repeat(5,minmax(20px,1fr)) 12px repeat(5,minmax(20px,1fr));gap:3px}body .page-shell .seat{height:26px;font-size:8px}body .page-shell .aisle-space{min-width:10px}body .page-shell .legend{gap:13px;font-size:9px}}
 @media(max-width:800px){.seat-row{grid-template-columns:18px repeat(5,minmax(22px,1fr)) 16px repeat(5,minmax(22px,1fr));gap:5px}.seat-panel{padding:22px 14px 20px}}
