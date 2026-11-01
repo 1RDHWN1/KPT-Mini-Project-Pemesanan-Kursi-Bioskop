@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131d">
+  <title>Bioskop Kita — Reservasi Kursi</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Bioskop Kita">
+        <span class="brand-mark">BK</span><span>bioskop<span class="brand-light">kita</span></span>
+      </a>
+      <span class="live-pill"><span class="live-dot"></span> PEMESANAN LANGSUNG</span>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">PENGALAMAN MENONTON</p>
+        <h1>Pilih tempat<br><span>duduk terbaikmu.</span></h1>
+        <p class="intro">Pilih kursi yang kamu suka. Status kursi diperbarui langsung untuk semua penonton.</p>
+      </div>
+      <article class="show-card">
+        <div class="poster"><span>LAYAR<br>BESAR</span><i>✦</i></div>
+        <div class="show-info">
+          <span class="show-label">PEMUTARAN HARI INI</span>
+          <h2>Film Pilihan</h2>
+          <p>Studio 1 <span>•</span> 19.00 WIB</p>
+          <div class="show-meta"><span>2D</span><span>Semua umur</span><span>1j 45m</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="booking-layout" aria-label="Pilih kursi">
+      <div class="seat-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">STUDIO 01</p><h2>Pilih kursi</h2></div>
+          <span id="connection" class="connection"><span></span> Menghubungkan…</span>
+        </div>
+
+        <div class="screen-wrap"><div class="screen"></div><span>LAYAR</span></div>
+        <div id="seat-map" class="seat-map" aria-label="Denah kursi"></div>
+        <div class="legend">
+          <span><i class="legend-seat available"></i>Tersedia</span>
+          <span><i class="legend-seat selected"></i>Pilihanmu</span>
+          <span><i class="legend-seat booked"></i>Terpesan</span>
+        </div>
+      </div>
+
+      <aside class="order-panel">
+        <div class="order-top"><p class="eyebrow">RINGKASAN</p><h2>Pesananmu</h2></div>
+        <div class="selected-card"><span class="ticket-icon">▣</span><div><span class="summary-label">KURSI DIPILIH</span><strong id="selected-seat">Belum ada</strong></div></div>
+        <label class="name-label" for="customer-name">Nama pemesan</label>
+        <input id="customer-name" type="text" maxlength="60" placeholder="Masukkan nama" autocomplete="name">
+        <div class="price-row"><span>Harga tiket</span><strong>Rp 35.000</strong></div>
+        <button id="book-button" class="book-button" disabled>Pesan kursi <span>→</span></button>
+        <p class="note">Kursi dikonfirmasi setelah pemesanan berhasil.</p>
+        <div class="my-bookings"><div class="my-bookings-heading"><h3>Pesanan saya</h3><span id="booking-count">0</span></div><div id="booking-list" class="booking-list"><p class="empty-bookings">Belum ada pesanan di perangkat ini.</p></div></div>
+      </aside>
+    </section>
+
+    <footer><span>BIOSKOP KITA</span><span>Satu studio · Status kursi real-time</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

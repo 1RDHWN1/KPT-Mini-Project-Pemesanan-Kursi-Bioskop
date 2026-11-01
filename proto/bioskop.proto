@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package bioskop;
+
+service LayananBioskop {
+  rpc LihatKursi (LihatKursiRequest) returns (DaftarKursiResponse);
+  rpc PesanKursi (PesanKursiRequest) returns (HasilPesanResponse);
+  rpc BatalkanPesanan (BatalkanPesananRequest) returns (HasilPesanResponse);
+  rpc PantauKursi (PantauKursiRequest) returns (stream PembaruanKursi);
+}
+
+message LihatKursiRequest {}
+
+message Kursi {
+  string id = 1;
+  string baris = 2;
+  int32 nomor = 3;
+  bool tersedia = 4;
+}
+
+message DaftarKursiResponse {
+  repeated Kursi kursi = 1;
+  int64 versi = 2;
+}
+
+message PesanKursiRequest {
+  string request_id = 1;
+  string kursi_id = 2;
+  string nama_pemesan = 3;
+}
+
+message BatalkanPesananRequest {
+  string request_id = 1;
+  string booking_id = 2;
+}
+
+message HasilPesanResponse {
+  bool sukses = 1;
+  string pesan = 2;
+  string booking_id = 3;
+  string kursi_id = 4;
+}
+
+message PantauKursiRequest {}
+
+message PembaruanKursi {
+  repeated Kursi kursi = 1;
+  int64 versi = 2;
+}
