@@ -167,6 +167,21 @@ body .page-shell .booking-item button{color:#d1968f}
 body .page-shell footer{color:#849590}
 body .page-shell~.toast{background:#2d3922;color:#edf2ed;box-shadow:0 8px 30px #0007}
 body .page-shell~.toast.error{background:#3a2423;color:#f2d8d5;border-color:#60403e}
+/* Give the cinema seating chart the full row; put the order form below it. */
+body .page-shell .booking-layout{grid-template-columns:minmax(0,1fr);gap:18px}
+body .page-shell .seat-panel{width:100%;padding:32px 42px 28px}
+body .page-shell .seat-map{gap:11px;width:100%;}
+body .page-shell .seat-row{grid-template-columns:34px repeat(5,minmax(38px,48px)) 38px repeat(5,minmax(38px,48px));gap:10px}
+body .page-shell .seat{height:38px;font-size:12px;border-radius:9px 9px 5px 5px}
+body .page-shell .seat::after{height:3px;bottom:4px;left:7px;right:7px}
+body .page-shell .row-label,body .page-shell .column-label{font-size:13px}
+body .page-shell .screen-wrap{width:min(72%,700px);margin:34px auto 24px;font-size:11px}
+body .page-shell .screen{height:22px;margin-bottom:11px}
+body .page-shell .legend{gap:30px;margin-top:30px;font-size:12px}
+body .page-shell .legend-seat{width:16px;height:16px}
+body .page-shell .order-panel{width:min(100%,680px);margin:0 auto;position:static;padding:26px 30px}
+@media(max-width:800px){body .page-shell .seat-panel{padding:25px 18px}body .page-shell .seat-row{grid-template-columns:24px repeat(5,minmax(26px,1fr)) 18px repeat(5,minmax(26px,1fr));gap:7px}body .page-shell .seat{height:34px}}
+@media(max-width:430px){body .page-shell .seat-panel{padding:20px 10px}body .page-shell .seat-row{grid-template-columns:18px repeat(5,minmax(20px,1fr)) 12px repeat(5,minmax(20px,1fr));gap:4px}body .page-shell .seat{height:29px;font-size:9px}body .page-shell .row-label,body .page-shell .column-label{font-size:10px}body .page-shell .screen-wrap{width:80%}body .page-shell .order-panel{padding:22px 18px}body .page-shell .legend{gap:15px;font-size:10px}}
 @media(max-width:800px){body .page-shell .seat-row{grid-template-columns:18px repeat(5,minmax(22px,1fr)) 16px repeat(5,minmax(22px,1fr));gap:5px}body .page-shell .seat-panel{padding:22px 14px 20px}}
 @media(max-width:430px){body .page-shell .seat-row{grid-template-columns:16px repeat(5,minmax(20px,1fr)) 12px repeat(5,minmax(20px,1fr));gap:3px}body .page-shell .seat{height:26px;font-size:8px}body .page-shell .aisle-space{min-width:10px}body .page-shell .legend{gap:13px;font-size:9px}}
 @media(max-width:800px){.seat-row{grid-template-columns:18px repeat(5,minmax(22px,1fr)) 16px repeat(5,minmax(22px,1fr));gap:5px}.seat-panel{padding:22px 14px 20px}}
