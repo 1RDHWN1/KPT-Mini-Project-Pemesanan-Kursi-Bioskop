@@ -33,12 +33,35 @@ function showToast(message, isError = false) {
 function renderSeats() {
   seatMap.replaceChildren();
   const rows = [...new Set(seats.map(seat => seat.baris))];
+  const heading = document.createElement('div');
+  heading.className = 'seat-row seat-heading';
+  heading.append(document.createElement('span'));
+  for (let number = 1; number <= 10; number++) {
+    if (number === 6) {
+      const aisle = document.createElement('span');
+      aisle.className = 'aisle-space';
+      heading.append(aisle);
+    }
+    const label = document.createElement('span');
+    label.className = 'column-label';
+    label.textContent = number;
+    heading.append(label);
+  }
+  seatMap.append(heading);
   for (const row of rows) {
+    const rowElement = document.createElement('div');
+    rowElement.className = 'seat-row';
     const rowLabel = document.createElement('span');
     rowLabel.className = 'row-label';
     rowLabel.textContent = row;
-    seatMap.append(rowLabel);
-    for (const seat of seats.filter(item => item.baris === row)) {
+    rowElement.append(rowLabel);
+    for (const seat of seats.filter(item => item.baris === row).sort((a, b) => a.nomor - b.nomor)) {
+      if (seat.nomor === 6) {
+        const aisle = document.createElement('span');
+        aisle.className = 'aisle-space';
+        aisle.setAttribute('aria-hidden', 'true');
+        rowElement.append(aisle);
+      }
       const button = document.createElement('button');
       button.className = `seat${seat.tersedia ? '' : ' booked'}${selectedSeat === seat.id ? ' selected' : ''}`;
       button.textContent = seat.nomor;
@@ -50,8 +73,9 @@ function renderSeats() {
         renderSeats();
         updateSelection();
       });
-      seatMap.append(button);
+      rowElement.append(button);
     }
+    seatMap.append(rowElement);
   }
   updateSelection();
 }
