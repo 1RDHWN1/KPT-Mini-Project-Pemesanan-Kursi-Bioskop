@@ -27,6 +27,12 @@ class PesanBody(BaseModel):
     nama_pemesan: str
 
 
+class PesanBanyakBody(BaseModel):
+    request_id: str
+    kursi_ids: list[str]
+    nama_pemesan: str
+
+
 class BatalBody(BaseModel):
     request_id: str
     booking_id: str
@@ -81,6 +87,27 @@ def pesan_kursi(body: PesanBody):
     try:
         result = panggil_dengan_retry(stub.PesanKursi, request)
         return {"sukses": result.sukses, "pesan": result.pesan, "booking_id": result.booking_id, "kursi_id": result.kursi_id}
+    except grpc.RpcError as error:
+        error_http(error)
+
+
+@app.post("/api/book-batch")
+def pesan_beberapa_kursi(body: PesanBanyakBody):
+    request = pb.PesanBeberapaKursiRequest(
+        request_id=body.request_id,
+        kursi_id=body.kursi_ids,
+        nama_pemesan=body.nama_pemesan,
+    )
+    try:
+        result = panggil_dengan_retry(stub.PesanBeberapaKursi, request)
+        return {
+            "sukses": result.sukses,
+            "pesan": result.pesan,
+            "pesanan": [
+                {"booking_id": item.booking_id, "kursi_id": item.kursi_id}
+                for item in result.pesanan
+            ],
+        }
     except grpc.RpcError as error:
         error_http(error)
 

@@ -8,7 +8,8 @@ const bookingCount = document.querySelector('#booking-count');
 const toast = document.querySelector('#toast');
 
 let seats = [];
-let selectedSeat = null;
+const selectedSeats = new Set();
+let bookingInProgress = false;
 let toastTimer;
 const bookingsKey = 'bioskop-kita-bookings';
 
@@ -63,13 +64,14 @@ function renderSeats() {
         rowElement.append(aisle);
       }
       const button = document.createElement('button');
-      button.className = `seat${seat.tersedia ? '' : ' booked'}${selectedSeat === seat.id ? ' selected' : ''}`;
+      button.className = `seat${seat.tersedia ? '' : ' booked'}${selectedSeats.has(seat.id) ? ' selected' : ''}`;
       button.textContent = seat.nomor;
       button.title = `${seat.id} — ${seat.tersedia ? 'tersedia' : 'terpesan'}`;
       button.setAttribute('aria-label', `Kursi ${seat.id}, ${seat.tersedia ? 'tersedia' : 'terpesan'}`);
       button.disabled = !seat.tersedia;
       button.addEventListener('click', () => {
-        selectedSeat = selectedSeat === seat.id ? null : seat.id;
+        if (selectedSeats.has(seat.id)) selectedSeats.delete(seat.id);
+        else selectedSeats.add(seat.id);
         renderSeats();
         updateSelection();
       });
@@ -81,8 +83,13 @@ function renderSeats() {
 }
 
 function updateSelection() {
-  selectedSeatLabel.textContent = selectedSeat || 'Belum ada';
-  bookButton.disabled = !selectedSeat;
+  const selectedIds = seats.filter(seat => selectedSeats.has(seat.id)).map(seat => seat.id);
+  const count = selectedIds.length;
+  selectedSeatLabel.textContent = count ? selectedIds.join(', ') : 'Belum ada';
+  document.querySelector('#selected-count').textContent = count;
+  document.querySelector('#ticket-total').textContent = `Rp ${new Intl.NumberFormat('id-ID').format(count * 35000)}`;
+  bookButton.disabled = count === 0 || bookingInProgress;
+  bookButton.innerHTML = bookingInProgress ? 'Memproses…' : count ? `Pesan ${count} kursi <span>→</span>` : 'Pesan kursi <span>→</span>';
 }
 
 function renderBookings() {
@@ -115,7 +122,9 @@ async function loadSeats() {
     if (!response.ok) throw new Error('Gagal mengambil status kursi');
     const data = await response.json();
     seats = data.kursi;
-    if (selectedSeat && !seats.some(seat => seat.id === selectedSeat && seat.tersedia)) selectedSeat = null;
+    for (const id of selectedSeats) {
+      if (!seats.some(seat => seat.id === id && seat.tersedia)) selectedSeats.delete(id);
+    }
     renderSeats();
   } catch (error) {
     connection.className = 'connection offline';
@@ -132,7 +141,9 @@ function connectSeatUpdates() {
   events.addEventListener('seats', event => {
     const data = JSON.parse(event.data);
     seats = data.kursi;
-    if (selectedSeat && !seats.some(seat => seat.id === selectedSeat && seat.tersedia)) selectedSeat = null;
+    for (const id of selectedSeats) {
+      if (!seats.some(seat => seat.id === id && seat.tersedia)) selectedSeats.delete(id);
+    }
     renderSeats();
   });
   events.addEventListener('error', () => {
@@ -142,31 +153,33 @@ function connectSeatUpdates() {
 }
 
 async function bookSelectedSeat() {
-  if (!selectedSeat) return;
+  if (!selectedSeats.size) return;
   const nama = nameInput.value.trim();
   if (!nama) {
     nameInput.focus();
     showToast('Isi nama pemesan dulu ya.', true);
     return;
   }
-  bookButton.disabled = true;
+  bookingInProgress = true;
+  updateSelection();
+  const kursiIds = seats.filter(seat => selectedSeats.has(seat.id)).map(seat => seat.id);
   bookButton.textContent = 'Memproses…';
-  const payload = { request_id: crypto.randomUUID(), kursi_id: selectedSeat, nama_pemesan: nama };
+  const payload = { request_id: crypto.randomUUID(), kursi_ids: kursiIds, nama_pemesan: nama };
   try {
-    const response = await fetch('/api/book', {
+    const response = await fetch('/api/book-batch', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.detail || 'Pemesanan gagal. Coba lagi.');
     if (!result.sukses) throw new Error(result.pesan);
-    saveBookings([...localBookings(), { booking_id: result.booking_id, kursi_id: result.kursi_id, nama_pemesan: nama }]);
-    selectedSeat = null;
+    saveBookings([...localBookings(), ...result.pesanan.map(item => ({ ...item, nama_pemesan: nama }))]);
+    selectedSeats.clear();
     showToast(result.pesan);
     await loadSeats();
   } catch (error) {
     showToast(error.message || 'Pemesanan gagal. Coba lagi.', true);
   } finally {
-    bookButton.innerHTML = 'Pesan kursi <span>→</span>';
+    bookingInProgress = false;
     updateSelection();
   }
 }

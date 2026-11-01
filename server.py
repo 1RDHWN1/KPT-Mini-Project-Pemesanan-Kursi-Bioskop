@@ -68,6 +68,51 @@ class LayananBioskop(rpc.LayananBioskopServicer):
             self.hasil_permintaan[key] = hasil
             return hasil
 
+    def PesanBeberapaKursi(self, request, context):
+        kursi_ids = list(request.kursi_id)
+        if not request.request_id.strip() or not kursi_ids:
+            context.abort(grpc.StatusCode.INVALID_ARGUMENT, "request_id dan minimal satu kursi wajib diisi")
+        key = ("pesan_banyak", request.request_id)
+        with self.kondisi:
+            if key in self.hasil_permintaan:
+                return self.hasil_permintaan[key]
+
+            if len(set(kursi_ids)) != len(kursi_ids):
+                hasil = pb.HasilPesanBanyakResponse(sukses=False, pesan="Daftar kursi berisi pilihan yang sama")
+            else:
+                kursi_tidak_ada = [kursi_id for kursi_id in kursi_ids if kursi_id not in self.kursi]
+                kursi_sudah_dipesan = [kursi_id for kursi_id in kursi_ids if kursi_id in self.kursi and not self.kursi[kursi_id]["tersedia"]]
+                if kursi_tidak_ada:
+                    hasil = pb.HasilPesanBanyakResponse(
+                        sukses=False,
+                        pesan=f"Kursi tidak ditemukan: {', '.join(kursi_tidak_ada)}",
+                    )
+                elif kursi_sudah_dipesan:
+                    hasil = pb.HasilPesanBanyakResponse(
+                        sukses=False,
+                        pesan=f"Kursi sudah dipesan: {', '.join(kursi_sudah_dipesan)}",
+                    )
+                else:
+                    daftar_pesanan = []
+                    for kursi_id in kursi_ids:
+                        booking_id = secrets.token_urlsafe(18)
+                        self.kursi[kursi_id]["tersedia"] = False
+                        self.pesanan[booking_id] = {
+                            "kursi_id": kursi_id,
+                            "nama_pemesan": request.nama_pemesan.strip(),
+                        }
+                        daftar_pesanan.append(pb.TiketPesanan(booking_id=booking_id, kursi_id=kursi_id))
+                    hasil = pb.HasilPesanBanyakResponse(
+                        sukses=True,
+                        pesan=f"{len(daftar_pesanan)} kursi berhasil dipesan",
+                        pesanan=daftar_pesanan,
+                    )
+                    self.versi += 1
+                    self.kondisi.notify_all()
+
+            self.hasil_permintaan[key] = hasil
+            return hasil
+
     def BatalkanPesanan(self, request, context):
         if not request.request_id.strip() or not request.booking_id.strip():
             context.abort(grpc.StatusCode.INVALID_ARGUMENT, "request_id dan booking_id wajib diisi")

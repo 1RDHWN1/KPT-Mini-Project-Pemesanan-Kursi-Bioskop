@@ -5,6 +5,7 @@ package bioskop;
 service LayananBioskop {
   rpc LihatKursi (LihatKursiRequest) returns (DaftarKursiResponse);
   rpc PesanKursi (PesanKursiRequest) returns (HasilPesanResponse);
+  rpc PesanBeberapaKursi (PesanBeberapaKursiRequest) returns (HasilPesanBanyakResponse);
   rpc BatalkanPesanan (BatalkanPesananRequest) returns (HasilPesanResponse);
   rpc PantauKursi (PantauKursiRequest) returns (stream PembaruanKursi);
 }
@@ -39,6 +40,23 @@ message HasilPesanResponse {
   string pesan = 2;
   string booking_id = 3;
   string kursi_id = 4;
+}
+
+message PesanBeberapaKursiRequest {
+  string request_id = 1;
+  repeated string kursi_id = 2;
+  string nama_pemesan = 3;
+}
+
+message TiketPesanan {
+  string booking_id = 1;
+  string kursi_id = 2;
+}
+
+message HasilPesanBanyakResponse {
+  bool sukses = 1;
+  string pesan = 2;
+  repeated TiketPesanan pesanan = 3;
 }
 
 message PantauKursiRequest {}

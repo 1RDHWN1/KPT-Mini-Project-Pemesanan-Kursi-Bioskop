@@ -16,10 +16,11 @@ Browser memakai HTTP karena browser biasa tidak mendukung gRPC native. Gateway m
 |---|---|---|
 | `LihatKursi` | Unary | Mengambil status seluruh kursi. |
 | `PesanKursi` | Unary | Memesan satu kursi dengan `request_id` idempoten. |
+| `PesanBeberapaKursi` | Unary | Memesan beberapa kursi sekaligus secara atomik. |
 | `BatalkanPesanan` | Unary | Membatalkan pesanan menggunakan `booking_id`. |
 | `PantauKursi` | Server streaming | Mengirim snapshot awal dan snapshot baru saat status berubah. |
 
-Semua akses ke kursi dan data pesanan dilindungi `threading.Condition` (yang juga menyediakan lock). Pengecekan kursi tersedia dan perubahan status terjadi di dalam critical section yang sama. Retry gateway menggunakan ID permintaan yang sama. Hasil operasi disimpan dalam memori untuk deduplikasi.
+Semua akses ke kursi dan data pesanan dilindungi `threading.Condition` (yang juga menyediakan lock). Pengecekan ketersediaan dan perubahan status terjadi di dalam critical section yang sama. Pemesanan beberapa kursi divalidasi sebagai satu transaksi: jika satu kursi saja tidak tersedia, tidak satu pun dipesan. Retry gateway menggunakan ID permintaan yang sama. Hasil operasi disimpan dalam memori untuk deduplikasi.
 
 ## Menjalankan dengan Docker
 

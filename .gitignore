@@ -2,6 +2,8 @@
 venv/
 __pycache__/
 *.py[cod]
+proto/bioskop_pb2.py
+proto/bioskop_pb2_grpc.py
 .env
 .idea/
 .vscode/
